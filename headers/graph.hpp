@@ -1,37 +1,32 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <iostream>
+#include <cmath>
 
-struct Route{
-    
+struct Location {
+    std::string id;
+    std::string name;
+    char type;
+    double x, y;
+
+    Location()=default;
+   
+    Location(std::string id, std::string name, double x, double y, char type)
+        : id(id), name(name), type(type), x(x), y(y) {}  
+};
+
+struct Route {
     std::string from, to;
     double distance;
     double time; 
 
-};
+    Route()=default;
 
-
-struct Location{
-
-    std::string id;
-    std::string name;
-    char type;
-
+    Route(std::string from, std::string to, double distance, double time)
+        : from(from), to(to), distance(distance), time(time) {} 
 };
 
 
 
-class GraphRoute{
-    private:
-     
-     std::unordered_map<std::string, Location> location;
-     std::unordered_map<std::string, std::vector<Route>> adjacency;
 
-    public:
-    
-     void addLocation(std::string id, std::string name, int x, int y, char type);
-     void addRoute(std::string from, std::string to);
-     double calculateDistance(std::string id1, std::string id2);
-
-
-};
