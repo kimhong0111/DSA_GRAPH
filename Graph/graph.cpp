@@ -5,6 +5,7 @@ class GraphRoute{
      
      std::unordered_map<std::string, Location> location;
      std::unordered_map<std::string, std::vector<Route>> adjacency;
+     
 
     public:
     
@@ -39,12 +40,22 @@ class GraphRoute{
      }
 
      std::vector<Route>& getNeighbor(std::string nodeId){
+        if(adjacency.find(nodeId)==adjacency.end()){
+            std::cout<<"current place doesn't exist"<<std::endl;
+        }
+        else if(adjacency[nodeId].size()==0){
+           std::cout<<"There is no neighbor"<<std::endl;
+        }
         return adjacency[nodeId];
      }
 
     Location& getLocation(std::string nodeId){
+        if(location.find(nodeId)==location.end()){
+            std::cout<<"current place doesn't exist"<<std::endl;
+        }
         return location[nodeId];
      }
 
-
+     
+   
 };
