@@ -8,6 +8,7 @@
 #include <algorithm>      
 #include "Dijkstra.hpp"
 
+
 struct Location {
     std::string id;
     std::string name;

@@ -1,4 +1,5 @@
 #include "../headers/graph.hpp"
+#include <queue>
 
 class GraphRoute{
     private:
@@ -55,6 +56,115 @@ class GraphRoute{
         }
         return location[nodeId];
      }
+
+     pathToResult FindShortestPath(std::string startId , std::string endId){
+         pathToResult result;
+         result.found=false;
+             if(location.find(startId)==location.end() || location.find(endId)==location.end()){
+                std::cout<<"One place or Both places don't exist !"<<std::endl;
+             }
+
+             if(startId==endId){
+                result.path= {startId};
+                result.totalDistance=0;
+                result.totalTime=0;
+                result.found=true;
+
+                return result;
+
+             }
+
+            const  double INF=std::numeric_limits<double>::max();
+            std::unordered_map<std::string,double> distances;
+            std::unordered_map<std::string ,std::string> previous;
+            std::unordered_set<std::string> visited;
+
+             for(const  auto&[id,loc] : location){
+                distances[id]=INF;
+             }
+             using queueItem = std::pair<double,std::string>;
+             std::priority_queue<queueItem,std::vector<queueItem>,std::greater<queueItem>> pq;
+
+             distances[startId]=0;
+             pq.push({0,startId});
+             while(!pq.empty()){
+                const auto [currentDistance, currentId] = pq.top();
+                pq.pop();
+
+                if(visited.find(currentId)!=visited.end()){
+                    continue;
+                }
+
+                visited.insert(currentId);
+
+                if(currentId==endId){
+                    break;
+                }
+
+                for(Route& route : adjacency[currentId] ){
+                    std::string neigborId = route.to;
+                    if(visited.find(neigborId)!=visited.end()){
+                        continue;
+                    }
+                    double  newDist = currentDistance + route.distance;
+                   if(newDist < distances[neigborId]){
+                       distances[neigborId]=newDist;
+                       previous[neigborId]=currentId;
+                       pq.push({newDist, neigborId});
+                   }
+
+                }
+             }
+
+         if (distances[endId] == INF) {
+            std::cout << "No path from " << startId << " to " << endId << "!\n";
+            return result;
+        }
+
+     
+
+     std::vector<std::string> backwardPath;
+     std::string current = endId;
+
+     while(current!=startId){
+         backwardPath.push_back(current);
+         current=previous[current];
+     }
+
+     backwardPath.push_back(startId);
+     std::reverse(backwardPath.begin(),backwardPath.end());
+
+     double totalTime=0;
+     double totalDist=0;
+     for(int i=0;i<backwardPath.size()-1;i++){
+         std::string from=backwardPath[i];
+         std::string to=backwardPath[i+1];
+         
+         bool foundRoute=false;
+         if(adjacency.find(from)!=adjacency.end()){
+             for(const Route& route :adjacency[from]){
+                 if(route .to==to){
+                    totalDist+=route.distance;
+                    totalTime+=route.time;
+                    foundRoute=true;
+                 }
+             }
+         }
+
+          if (!foundRoute) {
+                std::cout << "Warning: Missing route between " 
+                          << from << " and " << to << "\n";
+            }
+        }
+        
+        result.path = backwardPath;
+        result.totalDistance = totalDist;
+        result.totalTime = totalTime;
+        result.found = true;
+        
+        return result;
+
+    }
 
      
    
