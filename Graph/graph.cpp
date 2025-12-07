@@ -24,8 +24,9 @@ class GraphRoute{
 
           double distance=calculateDistance(fromId,toId);
           double time= distance * 0.4;
+          double price = distance * 0.1;
          
-          Route route(fromId,toId,distance,time);
+          Route route(fromId,toId,distance,time,price);
           adjacency[fromId].push_back(route);
 
           std::cout << "Route added: " << fromId << " → " << toId 
@@ -136,6 +137,7 @@ class GraphRoute{
 
      double totalTime=0;
      double totalDist=0;
+     double totalPrice=0;
      for(int i=0;i<backwardPath.size()-1;i++){
          std::string from=backwardPath[i];
          std::string to=backwardPath[i+1];
@@ -146,6 +148,7 @@ class GraphRoute{
                  if(route .to==to){
                     totalDist+=route.distance;
                     totalTime+=route.time;
+                    totalPrice+=route.price;
                     foundRoute=true;
                  }
              }
@@ -160,6 +163,7 @@ class GraphRoute{
         result.path = backwardPath;
         result.totalDistance = totalDist;
         result.totalTime = totalTime;
+        result.totalPrice=totalPrice;
         result.found = true;
         
         return result;

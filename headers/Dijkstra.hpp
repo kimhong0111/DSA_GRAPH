@@ -4,6 +4,7 @@ struct pathToResult{
   std::vector<std::string>path;
   double totalTime;
   double totalDistance;
+  double totalPrice;
   bool found;
 
   void print(){
@@ -20,6 +21,8 @@ struct pathToResult{
         std::cout<<"\n";
         std::cout<<"Total Distance "<<totalDistance<<std::endl;
         std::cout<<"Total Time "<<totalDistance<<std::endl;
+        std::cout<<"Total Price "<<totalPrice<<std::endl;
+
 
 
         

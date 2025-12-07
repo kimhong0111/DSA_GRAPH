@@ -25,11 +25,12 @@ struct Route {
     std::string from, to;
     double distance;
     double time; 
+    double price;
 
     Route()=default;
 
-    Route(std::string from, std::string to, double distance, double time)
-        : from(from), to(to), distance(distance), time(time) {} 
+    Route(std::string from, std::string to, double distance, double time,double price)
+        : from(from), to(to), distance(distance), time(time), price(price) {} 
 };
 
 
